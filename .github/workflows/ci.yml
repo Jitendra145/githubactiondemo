@@ -20,10 +20,10 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build and test
-        run: ./mvnw clean verify
+      - name: Compile
+        run: ./mvnw compile
 
-  test:
+  unit-test:
     needs: build
     runs-on: ubuntu-latest
 
@@ -37,5 +37,22 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Run Tests
+      - name: Run unit Tests
         run: ./mvnw test
+
+    package:
+      needs: unit-test
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v5
+
+        - name: Set up Java
+          uses: actions/setup-java@v5
+          with:
+            java-version: '21'
+            distribution: 'temurin'
+
+        - name: Package Application
+          run: ./mvnw package -DskipTests
