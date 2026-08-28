@@ -40,8 +40,25 @@ jobs:
       - name: Run unit Tests
         run: ./mvnw test
 
+  integration-test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Run integration Tests
+        run: ./mvnw verify
+
   package:
-    needs: unit-test
+    needs: [unit-test, integration-test]
     runs-on: ubuntu-latest
 
     steps:
