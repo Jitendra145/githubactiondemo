@@ -19,6 +19,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
 
       - name: Build Application
         run: ./mvnw package -DskipTests
@@ -42,6 +43,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
 
       - name: Run unit Tests
         run: ./mvnw test
@@ -59,6 +61,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
 
       - name: Run integration Tests
         run: ./mvnw verify
