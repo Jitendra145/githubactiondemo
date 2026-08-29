@@ -38,8 +38,6 @@ jobs:
   unit-test:
     needs: build
     runs-on: ubuntu-latest
-    env:
-      DEMO_TOKEN: ${{secrets.DEMO_TOKEN}}
 
     steps:
       - name: Checkout code
@@ -51,9 +49,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
-      - name: Use secret
-        run: echo "Show test $DEMO_TOKEN"
 
       - name: Run unit Tests
         run: ./mvnw test
@@ -89,3 +84,13 @@ jobs:
 
       - name: List downloaded files
         run: ls -l target
+
+  deploy-dev:
+    needs: package
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Show deployment environment
+        run: echo "Deploying to ${{vars.APP_ENV}}"
