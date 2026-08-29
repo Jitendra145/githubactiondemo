@@ -1,0 +1,23 @@
+name: Java Build
+description: Build and test a Java Maven application
+
+inputs:
+  java-version:
+    description: Java version
+    required: false
+    default: '21'
+
+runs:
+  using: composite
+
+  steps:
+    - name: Set up Java
+      uses: actions/setup-java@v5
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: temurin
+        cache: maven
+
+    - name: Build and Test
+      shell: bash
+      run: ./mvnw clean verify

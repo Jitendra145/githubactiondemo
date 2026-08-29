@@ -71,6 +71,7 @@ jobs:
       - name: Run integration tests
         run: ./mvnw verify
 
+
   package:
     needs: [unit-test, integration-test]
     runs-on: ubuntu-latest
