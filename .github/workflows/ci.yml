@@ -35,6 +35,14 @@ jobs:
           name: application.jar
           path: target/*.jar
 
+  build-status:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show build result
+        run: echo "Build result is ${{ needs.build.result }}"
+
   unit-test:
     needs: build
     runs-on: ubuntu-latest
