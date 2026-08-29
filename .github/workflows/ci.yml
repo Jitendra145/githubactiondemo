@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: ${{ vars.APP_ENV}}
 
     steps:
       - name: Checkout code
@@ -20,6 +22,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
+      - name: Show environment
+        run: echo "Running in $APP_ENV environment"
 
       - name: Build Application
         run: ./mvnw package -DskipTests
@@ -33,6 +38,8 @@ jobs:
   unit-test:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      DEMO_TOKEN: ${{secrets.DEMO_TOKEN}}
 
     steps:
       - name: Checkout code
@@ -44,6 +51,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
+      - name: Use secret
+        run: echo "Show test $DEMO_TOKEN"
 
       - name: Run unit Tests
         run: ./mvnw test
