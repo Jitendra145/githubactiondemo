@@ -53,6 +53,10 @@ jobs:
       - name: Run unit Tests
         run: ./mvnw test
 
+      - name: Report failure
+        if: failure()
+        run: echo "A previous step in this job failed"
+
   integration-test:
     needs: build
     runs-on: ubuntu-latest
