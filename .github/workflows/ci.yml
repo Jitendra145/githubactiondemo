@@ -71,14 +71,6 @@ jobs:
       - name: Run integration tests
         run: ./mvnw verify
 
-  permission-demo:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Show permission demo
-        run: echo "This job has only read access to repository contents"
 
   package:
     needs: [unit-test, integration-test]

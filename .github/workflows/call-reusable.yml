@@ -1,12 +1,17 @@
-name: Call Reusable Workflow
+name: Composite Action Demo
 
 on:
   workflow_dispatch:
 
 jobs:
-  call-java-build:
-    uses: ./.github/workflows/reusable-java-build.yml
-    with:
-      java-version: '21'
-    secrets:
-      demo-token: ${{ secrets.DEMO_TOKEN }}
+  java-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Run Java build action
+        uses: ./.github/actions/java-build
+        with:
+          java-version: '21'
