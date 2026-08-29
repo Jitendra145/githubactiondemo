@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      app-version: ${{ steps.version.outputs.app-version }}
+
     env:
       APP_ENV: ${{ vars.APP_ENV}}
 
@@ -26,6 +29,10 @@ jobs:
       - name: Show environment
         run: echo "Running in $APP_ENV environment"
 
+      - name: Set Application Version
+        id: version
+        run: echo "app-version=1.0.0" >> "  $GITHUB_OUTPUT"
+
       - name: Build Application
         run: ./mvnw package -DskipTests
 
@@ -40,8 +47,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Show build result
+      - name: Show build information
         run: echo "Build result is ${{ needs.build.result }}"
+
+      - name: Show Application version
+        run: echo "Application version is ${{needs.build.outputs.app-version}}"
 
   unit-test:
     needs: build
