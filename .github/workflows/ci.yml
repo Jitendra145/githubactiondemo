@@ -57,6 +57,10 @@ jobs:
         if: failure()
         run: echo "A previous step in this job failed"
 
+      - name: Always run
+        if: always()
+        run: echo "This step always runs"
+
   integration-test:
     needs: build
     runs-on: ubuntu-latest
