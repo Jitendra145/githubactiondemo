@@ -42,6 +42,28 @@ jobs:
           name: application.jar
           path: target/*.jar
 
+  matrix-test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17,21]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: temurin
+          cache: maven
+
+      - name: Run tests
+        run: ./mvnw test
+
   build-status:
     needs: build
     runs-on: ubuntu-latest
