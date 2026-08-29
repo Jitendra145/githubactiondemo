@@ -9,6 +9,10 @@ on:
         type: string
         default: '21'
 
+    secrets:
+      demo-token:
+        required: true
+
 jobs:
   java-build:
     runs-on: ubuntu-latest
@@ -23,6 +27,17 @@ jobs:
           java-version: ${{ inputs.java-version }}
           distribution: 'temurin'
           cache: maven
+
+      - name: Check demo secret
+        env:
+          DEMO_TOKEN: ${{ secrets.demo-token }}
+        run: |
+          if [ -n "$DEMO_TOKEN" ]; then
+            echo "Demo secret was provided"
+          else
+            echo "Demo secret was not provide"
+            exit 1
+          fi
 
       - name: Build and test
         run: ./mvnw clean verify

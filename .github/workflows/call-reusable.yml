@@ -8,3 +8,5 @@ jobs:
     uses: ./.github/workflows/reusable-java-build.yml
     with:
       java-version: '21'
+    secrets:
+      demo-token: ${{ secrets.DEMO_TOKEN }}
