@@ -31,7 +31,7 @@ jobs:
 
       - name: Set Application Version
         id: version
-        run: echo "app-version=1.0.0" >> "  $GITHUB_OUTPUT"
+        run: echo "app-version=1.0.0" >> "$GITHUB_OUTPUT"
 
       - name: Build Application
         run: ./mvnw package -DskipTests
@@ -51,7 +51,7 @@ jobs:
         run: echo "Build result is ${{ needs.build.result }}"
 
       - name: Show Application version
-        run: echo "Application version is ${{needs.build.outputs.app-version}}"
+        run: echo "Application version is ${{ needs.build.outputs.app-version }}"
 
   unit-test:
     needs: build
