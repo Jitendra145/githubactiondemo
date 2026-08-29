@@ -3,14 +3,14 @@ name: Java CI
 on:
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
-    env:
-      APP_ENV: ${{ vars.APP_ENV}}
 
     steps:
       - name: Checkout code
@@ -23,16 +23,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Show environment
-        run: echo "Running in $APP_ENV environment"
-
-      - name: Build Application
+      - name: Build application
         run: ./mvnw package -DskipTests
 
       - name: Upload application artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
-          name: application.jar
+          name: application-jar
           path: target/*.jar
 
   unit-test:
@@ -50,12 +47,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run unit Tests
+      - name: Run unit tests
         run: ./mvnw test
-
-      - name: Report failure
-        if: failure()
-        run: echo "A previous step in this job failed"
 
   integration-test:
     needs: build
@@ -72,7 +65,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run integration Tests
+      - name: Run integration tests
         run: ./mvnw verify
 
   package:
@@ -83,10 +76,10 @@ jobs:
       - name: Download application artifact
         uses: actions/download-artifact@v5
         with:
-          name: application.jar
+          name: application-jar
           path: target
 
-      - name: List downloaded files
+      - name: List application artifact
         run: ls -l target
 
   deploy-dev:
@@ -94,7 +87,9 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: dev
+    env:
+      APP_ENV: ${{ vars.APP_ENV }}
 
     steps:
       - name: Show deployment environment
-        run: echo "Deploying to ${{vars.APP_ENV}}"
+        run: echo "Deploying to $APP_ENV environment"
