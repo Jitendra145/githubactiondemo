@@ -1,0 +1,8 @@
+name: Call Reusable Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-java-build:
+    uses: ./.github/workflows/reusable-java-build.yml
